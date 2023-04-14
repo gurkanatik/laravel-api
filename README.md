@@ -19,9 +19,30 @@ php artisan passport:install
 ```
 php artisan serve
 ```
-
 That's it! You should now be able to access the project.
 
-
-## Route List
+# Route List
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/26641100-9aa17277-e10d-4cec-90f3-6640e1e29c43?action=collection%2Ffork&collection-url=entityId%3D26641100-9aa17277-e10d-4cec-90f3-6640e1e29c43%26entityType%3Dcollection%26workspaceId%3D3afa1c41-0904-409c-8858-3bf20950d48b)
+
+# Auth
+
+## Register
+```
+api/register
+```
+| Param    | Type   | Description   | Unique | Required |
+|----------|--------|---------------|--------|----------|
+| email    | string | User email    | *      | *        |
+| phone    | bigInt | User phone    | *      | *        |
+| name     | string | User name     |        | *        |
+| password | string | User password |        | *        |
+
+
+## Login
+```
+api/login
+```
+| Param          | Type          | Description         | Required |
+|----------------|---------------|---------------------|----------|
+| email or phone | string/bigInt | User phone or email | *        |
+| password       | string        | User password       | *        |
