@@ -11,57 +11,48 @@ class AuthController extends Controller
 {
     public function register(RegisterRequest $request)
     {
-        $validated = $request->validated();
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'password' => Hash::make($request->input('password')),
+        ]);
 
-        $user = new User();
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->phone = $validated['phone'];
-        $user->password = Hash::make($validated['password']);
-
-        if ($user->save()) {
-            $user->token = $user->createToken('auth_token')->accessToken;
-            return response([
-                'message' => 'Successfully registered',
-                'token' => $user->token,
-                'user' => [
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                ]
-            ], 201);
-        }
+        $user->token = $user->createToken('auth_token')->accessToken;
 
         return response([
-            'message' => 'Something went wrong'
-        ], 400);
+            'message' => 'Successfully registered',
+            'token' => $user->token,
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+            ]
+        ], 201);
     }
 
     public function login(LoginRequest $request)
     {
-        $validated = $request->validated();
+        $user = User::where('email', $request->input('email'))
+            ->orWhere('phone', $request->input('phone'))
+            ->first();
 
-        if (array_key_exists('phone', $validated)) {
-            $user = User::where('phone', $validated['phone'])->first();
-        } else {
-            $user = User::where('email', $validated['email'])->first();
-        }
-
-        if (Hash::check($validated['password'], $user->password)) {
-            $user->token = $user->createToken('auth_token')->accessToken;
+        if (!$user || !Hash::check($request->input('password'), $user->password)) {
             return response([
-                'message' => 'Successfully logged in',
-                'token' => $user->token,
-                'user' => [
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'phone' => $user->phone,
-                ]
-            ]);
+                'message' => 'Provided credentials are incorrect'
+            ], 400);
         }
+
+        $user->token = $user->createToken('auth_token')->accessToken;
 
         return response([
-            'message' => 'Provided credentials are incorrect'
-        ], 400);
+            'message' => 'Successfully logged in',
+            'token' => $user->token,
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+            ]
+        ]);
     }
 }
