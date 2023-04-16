@@ -58,16 +58,23 @@ api/login
 
 ## Get All Contacts - GET
 ```
-api/user-contacts/{limit?}
+api/user-contacts
 ```
+| Param  | Type | Description | Required |
+|--------|------|-------------|----------|
+| offset | int  | limit start | *        |
+| limit  | int  | limit       | *        |
+
 ## Search Contacts - GET
 ```
 api/user-contacts/search
 ```
-| Param | Type   | Description   | Required |
-|-------|--------|---------------|----------|
-| name  | string | Contact Name  |          |
-| phone | int    | Contact Phone |          |
+| Param   | Type   | Description   | Required |
+|---------|--------|---------------|----------|
+| name    | string | Contact Name  |          |
+| phone   | int    | Contact Phone |          |
+| offset  | int    | limit start   | *        |
+| limit   | int    | limit         | *        |
 
 ## Store Contact - POST
 ```
