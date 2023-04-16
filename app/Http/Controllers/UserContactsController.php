@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\Contact\ContactRequest;
 use App\Http\Requests\Contact\StoreContactRequest;
 use App\Http\Requests\Contact\UpdateContactRequest;
 use App\Models\UserContact;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
 
 class UserContactsController extends Controller
 {
@@ -42,7 +39,7 @@ class UserContactsController extends Controller
         ]);
     }
 
-    public function search(Request $request)
+    public function search(ContactRequest $request)
     {
         $params = $request->only(['name', 'phone', 'offset', 'limit']);
         $cache_key = 'user_contacts.' . md5(serialize($params)) . '.' . auth()->id();
