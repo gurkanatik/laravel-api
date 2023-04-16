@@ -21,12 +21,19 @@ php artisan serve
 ```
 That's it! You should now be able to access the project.
 
+## Notes
+Laravel file and database drivers don't support tags.
+What you need to update, to fix this issue is simply changing the cache driver from file to array in your .env (located in root folder) file as below.
+```
+CACHE_DRIVER=array
+```
+
 # Route List
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/26641100-9aa17277-e10d-4cec-90f3-6640e1e29c43?action=collection%2Ffork&collection-url=entityId%3D26641100-9aa17277-e10d-4cec-90f3-6640e1e29c43%26entityType%3Dcollection%26workspaceId%3D3afa1c41-0904-409c-8858-3bf20950d48b)
 
 # Auth
 
-## Register
+## Register - POST
 ```
 api/register
 ```
@@ -38,7 +45,7 @@ api/register
 | password | string | User password |        | *        |
 
 
-## Login
+## Login - POST
 ```
 api/login
 ```
@@ -46,3 +53,44 @@ api/login
 |----------------|---------------|---------------------|----------|
 | email or phone | string/bigInt | User phone or email | *        |
 | password       | string        | User password       | *        |
+
+# User-contacts
+
+## Get All Contacts - GET
+```
+api/user-contacts/{limit?}
+```
+## Search Contacts - GET
+```
+api/user-contacts/search
+```
+| Param | Type   | Description   | Required |
+|-------|--------|---------------|----------|
+| name  | string | Contact Name  |          |
+| phone | int    | Contact Phone |          |
+
+## Store Contact - POST
+```
+api/user-contacts
+```
+| Param | Type   | Description   | Required |
+|-------|--------|---------------|----------|
+| name  | string | Contact Name  | *        |
+| phone | int    | Contact Phone | *        |
+
+## Update Contact - PUT
+```
+api/user-contacts
+```
+| Param | Type   | Description   | Required |
+|-------|--------|---------------|----------|
+| name  | string | Contact Name  |          |
+| phone | int    | Contact Phone |          |
+
+## Delete Contact - DELETE
+```
+api/user-contacts/{id}
+```
+| Param | Type   | Description | Required |
+|-------|--------|-------------|----------|
+| id    | int    | Contact ID  | *        |

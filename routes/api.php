@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserContactsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,20 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->name('register');
     Route::post('/login', 'login')->name('login');
 });
+
+Route::middleware('auth:api')->group(function () {
+
+    Route::controller(UserContactsController::class)
+        ->name('userContacts.')
+        ->prefix('user-contacts')
+        ->group(function () {
+            Route::get('/search', 'search')->name('search');
+            Route::get('/{id}', 'show')->name('show');
+            Route::get('/{limit?}', 'index')->name('get');
+            Route::put('/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'delete')->name('delete');
+            Route::post('/', 'store')->name('store');
+        });
+
+});
+
